@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yandex-metrika-logs-api"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Oleg Ionov <ionov.dpmn@gmail.com>"]
 readme = "README.md"

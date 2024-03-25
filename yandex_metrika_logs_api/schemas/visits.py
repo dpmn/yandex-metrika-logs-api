@@ -112,63 +112,189 @@ class SessionSchema(_FK):
 
 
 class SBrowserDeviceSchema(_FK):
-    client_id: Optional[int] = Field(default=None, alias='ym:s:clientID')
-    counter_user_id_hash: Optional[int] = Field(default=None, alias='ym:s:counterUserIDHash')
-    network_type: Optional[str] = Field(default=None, alias='ym:s:networkType')
-    browser_language: Optional[str] = Field(default=None, alias='ym:s:browserLanguage')
-    browser_country: Optional[str] = Field(default=None, alias='ym:s:browserCountry')
-    client_time_zone: Optional[int] = Field(default=None, alias='ym:s:clientTimeZone')
-    device_category: Optional[str] = Field(default=None, alias='ym:s:deviceCategory')
-    mobile_phone: Optional[str] = Field(default=None, alias='ym:s:mobilePhone')
-    mobile_phone_model: Optional[str] = Field(default=None, alias='ym:s:mobilePhoneModel')
-    operating_system_root: Optional[str] = Field(default=None, alias='ym:s:operatingSystemRoot')
-    operating_system: Optional[str] = Field(default=None, alias='ym:s:operatingSystem')
-    browser: Optional[str] = Field(default=None, alias='ym:s:browser')
-    browser_major_version: Optional[int] = Field(default=None, alias='ym:s:browserMajorVersion')
-    browser_minor_version: Optional[int] = Field(default=None, alias='ym:s:browserMinorVersion')
-    browser_engine: Optional[str] = Field(default=None, alias='ym:s:browserEngine')
-    browser_engine_version1: Optional[int] = Field(default=None, alias='ym:s:browserEngineVersion1')
-    browser_engine_version2: Optional[int] = Field(default=None, alias='ym:s:browserEngineVersion2')
-    browser_engine_version3: Optional[int] = Field(default=None, alias='ym:s:browserEngineVersion3')
-    browser_engine_version4: Optional[int] = Field(default=None, alias='ym:s:browserEngineVersion4')
-    cookie_enabled: Optional[int] = Field(default=None, alias='ym:s:cookieEnabled')
-    javascript_enabled: Optional[int] = Field(default=None, alias='ym:s:javascriptEnabled')
-    screen_format: Optional[int] = Field(default=None, alias='ym:s:screenFormat')
-    screen_colors: Optional[int] = Field(default=None, alias='ym:s:screenColors')
-    screen_orientation: Optional[str] = Field(default=None, alias='ym:s:screenOrientation')
-    screen_width: Optional[int] = Field(default=None, alias='ym:s:screenWidth')
-    screen_height: Optional[int] = Field(default=None, alias='ym:s:screenHeight')
-    physical_screen_width: Optional[int] = Field(default=None, alias='ym:s:physicalScreenWidth')
-    physical_screen_height: Optional[int] = Field(default=None, alias='ym:s:physicalScreenHeight')
-    window_client_width: Optional[int] = Field(default=None, alias='ym:s:windowClientWidth')
-    window_client_height: Optional[int] = Field(default=None, alias='ym:s:windowClientHeight')
+    client_id: Optional[int] = Field(
+        default=None, alias='ym:s:clientID',
+        description='Анонимный идентификатор пользователя в браузере (first-party cookies).',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt64')}
+    )
+    counter_user_id_hash: Optional[int] = Field(
+        default=None, alias='ym:s:counterUserIDHash',
+        description='Идентификатор посетителя (в рамках одного браузера), с помощью которого производится подсчёт '
+                    'уникальных посетителей сайта в интерфейсе Метрики.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt64')}
+    )
+    network_type: Optional[str] = Field(
+        default=None, alias='ym:s:networkType',
+        description='Тип соединения.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    browser_language: Optional[str] = Field(
+        default=None, alias='ym:s:browserLanguage',
+        description='Язык браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    browser_country: Optional[str] = Field(
+        default=None, alias='ym:s:browserCountry',
+        description='Страна браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    client_time_zone: Optional[int] = Field(
+        default=None, alias='ym:s:clientTimeZone',
+        description='Разница между часовым поясом пользователя и UTC (в минутах).',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Int16')}
+    )
+    device_category: Optional[str] = Field(
+        default=None, alias='ym:s:deviceCategory',
+        description='Тип устройства. Возможные значения: 1 — десктоп, 2 — мобильные телефоны, 3 — планшеты, 4 — TV.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    mobile_phone: Optional[str] = Field(
+        default=None, alias='ym:s:mobilePhone',
+        description='Производитель устройства.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    mobile_phone_model: Optional[str] = Field(
+        default=None, alias='ym:s:mobilePhoneModel',
+        description='Модель устройства.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    operating_system_root: Optional[str] = Field(
+        default=None, alias='ym:s:operatingSystemRoot',
+        description='Группа операционных систем.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    operating_system: Optional[str] = Field(
+        default=None, alias='ym:s:operatingSystem',
+        description='Операционная система (детально).',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    browser: Optional[str] = Field(
+        default=None, alias='ym:s:browser',
+        description='Браузер.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    browser_major_version: Optional[int] = Field(
+        default=None, alias='ym:s:browserMajorVersion',
+        description='Major-версия браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    browser_minor_version: Optional[int] = Field(
+        default=None, alias='ym:s:browserMinorVersion',
+        description='Minor-версия браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    browser_engine: Optional[str] = Field(
+        default=None, alias='ym:s:browserEngine',
+        description='Движок браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    browser_engine_major_version: Optional[int] = Field(
+        default=None, alias='ym:s:browserEngineVersion1',
+        description='Major-версия движка браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    browser_engine_minor_version: Optional[int] = Field(
+        default=None, alias='ym:s:browserEngineVersion2',
+        description='Minor-версия движка браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    browser_engine_build_version: Optional[int] = Field(
+        default=None, alias='ym:s:browserEngineVersion3',
+        description='Build-версия движка браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    browser_engine_revision_version: Optional[int] = Field(
+        default=None, alias='ym:s:browserEngineVersion4',
+        description='Revision-версия движка браузера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    cookie_enabled: Optional[int] = Field(
+        default=None, alias='ym:s:cookieEnabled',
+        description='Наличие Cookie.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt8')}
+    )
+    javascript_enabled: Optional[int] = Field(
+        default=None, alias='ym:s:javascriptEnabled',
+        description='Наличие JavaScript.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt8')}
+    )
+    screen_format: Optional[int] = Field(
+        default=None, alias='ym:s:screenFormat',
+        description='Соотношение сторон.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    screen_colors: Optional[int] = Field(
+        default=None, alias='ym:s:screenColors',
+        description='Глубина цвета.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt8')}
+    )
+    screen_orientation: Optional[str] = Field(
+        default=None, alias='ym:s:screenOrientation',
+        description='Ориентация экрана.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    )
+    screen_width: Optional[int] = Field(
+        default=None, alias='ym:s:screenWidth',
+        description='Логическая ширина.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    screen_height: Optional[int] = Field(
+        default=None, alias='ym:s:screenHeight',
+        description='Логическая высота.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    physical_screen_width: Optional[int] = Field(
+        default=None, alias='ym:s:physicalScreenWidth',
+        description='Физическая ширина.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    physical_screen_height: Optional[int] = Field(
+        default=None, alias='ym:s:physicalScreenHeight',
+        description='Физическая высота.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    window_client_width: Optional[int] = Field(
+        default=None, alias='ym:s:windowClientWidth',
+        description='Ширина окна.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
+    window_client_height: Optional[int] = Field(
+        default=None, alias='ym:s:windowClientHeight',
+        description='Высота окна.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+    )
 
 
 class SGeoSchema(_FK):
     ip_address: Optional[str] = Field(
         default=None,
         alias='ym:s:ipAddress',
-        description='IP адрес.'
+        description='IP адрес.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     region_country: Optional[str] = Field(
         default=None,
         alias='ym:s:regionCountry',
-        description='Страна (ISO).'
+        description='Страна (ISO).',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     region_city: Optional[str] = Field(
         default=None,
         alias='ym:s:regionCity',
-        description='Город (английское название).'
+        description='Город (английское название).',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     region_country_id: Optional[int] = Field(
         default=None,
         alias='ym:s:regionCountryID',
-        description='ID страны.'
+        description='ID страны.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt32')}
     )
     region_city_id: Optional[int] = Field(
         default=None,
         alias='ym:s:regionCityID',
-        description='ID города.'
+        description='ID города.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt32')}
     )
 
 
@@ -176,27 +302,32 @@ class SUTMSchema(_FK):
     utm_campaign: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>UTMCampaign',
-        description='UTM Campaign.'
+        description='UTM Campaign.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     utm_content: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>UTMContent',
-        description='UTM Content.'
+        description='UTM Content.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     utm_medium: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>UTMMedium',
-        description='UTM Medium.'
+        description='UTM Medium.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     utm_source: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>UTMSource',
-        description='UTM Source.'
+        description='UTM Source.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     utm_term: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>UTMTerm',
-        description='UTM Term.'
+        description='UTM Term.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
 
 
@@ -204,47 +335,56 @@ class STrafficSourceSchema(_FK):
     traffic_source: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>TrafficSource',
-        description='Источник трафика.'
+        description='Источник трафика.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     adv_engine: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>AdvEngine',
-        description='Рекламная система.'
+        description='Рекламная система.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     referral_source: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>ReferalSource',
-        description='Переход с сайтов.'
+        description='Переход с сайтов.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     search_engine_root: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>SearchEngineRoot',
-        description='Поисковая система.'
+        description='Поисковая система.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     search_engine: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>SearchEngine',
-        description='Поисковая система (детально).'
+        description='Поисковая система (детально).',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     social_network: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>SocialNetwork',
-        description='Социальная сеть.'
+        description='Социальная сеть.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     social_network_profile: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>SocialNetworkProfile',
-        description='Группа социальной сети.'
+        description='Группа социальной сети.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     recommendation_system: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>RecommendationSystem',
-        description='Переход из рекомендательных систем.'
+        description='Переход из рекомендательных систем.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     messenger: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>Messenger',
-        description='Переход из мессенджера.'
+        description='Переход из мессенджера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
 
 
@@ -414,97 +554,116 @@ class SEcommercePurchaseProductSchema(_FK):
     products_purchase_id: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsPurchaseID',
-        description='Идентификатор покупки.'
+        description='Идентификатор покупки.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_id: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsID',
-        description='Идентификатор или код купленного товара.'
+        description='Идентификатор или код купленного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_name: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsName',
-        description='Название купленного товара.'
+        description='Название купленного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_brand: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsBrand',
-        description='Бренд, к которому относится купленный товар.'
+        description='Бренд, к которому относится купленный товар.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_category: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCategory',
-        description='Категория, к которой относится купленный товар.'
+        description='Категория, к которой относится купленный товар.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_category1: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCategory1',
-        description='Категория, к которой относится купленный товар, уровень 1.'
+        description='Категория, к которой относится купленный товар, уровень 1.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_category2: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCategory2',
-        description='Категория, к которой относится купленный товар, уровень 2.'
+        description='Категория, к которой относится купленный товар, уровень 2.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_category3: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCategory3',
-        description='Категория, к которой относится купленный товар, уровень 3.'
+        description='Категория, к которой относится купленный товар, уровень 3.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_category4: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCategory4',
-        description='Категория, к которой относится купленный товар, уровень 4.'
+        description='Категория, к которой относится купленный товар, уровень 4.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_category5: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCategory5',
-        description='Категория, к которой относится купленный товар, уровень 5.'
+        description='Категория, к которой относится купленный товар, уровень 5.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_variant: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsVariant',
-        description='Вариант купленного товара.'
+        description='Вариант купленного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_position: Optional[List[int]] = Field(
         default=None,
         alias='ym:s:productsPosition',
-        description='Позиция купленного товара в списке или коллекции.'
+        description='Позиция купленного товара в списке или коллекции.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(Int32)')}
     )
     products_price: Optional[List[float]] = Field(
         default=None,
         alias='ym:s:productsPrice',
-        description='Цена купленного товара.'
+        description='Цена купленного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(Float64)')}
     )
     products_currency: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCurrency',
-        description='Валюта купленного товара.'
+        description='Валюта купленного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_coupon: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsCoupon',
-        description='Промокод, ассоциированный с купленным товаром.'
+        description='Промокод, ассоциированный с купленным товаром.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_quantity: Optional[List[int]] = Field(
         default=None,
         alias='ym:s:productsQuantity',
-        description='Количество купленных товаров.'
+        description='Количество купленных товаров.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(Int64)')}
     )
     products_list: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsList',
-        description='Список, в который входят купленные товары, связанные с транзакцией.'
+        description='Список, в который входят купленные товары, связанные с транзакцией.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     products_event_time: Optional[List[datetime]] = Field(
         default=None,
         alias='ym:s:productsEventTime',
-        description='Дата и время покупки товара.'
+        description='Дата и время покупки товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(DateTime)')}
     )
     products_discount: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:productsDiscount',
-        description='Процент скидки на купленный товар.'
+        description='Процент скидки на купленный товар.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
 
 
@@ -545,7 +704,24 @@ class SEcommerceEventProductSchema(_FK):
         description='Категория, к которой относится товар, уровень 2.',
         json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
-    # Продолжение для категорий до уровня 5 аналогичным образом
+    events_product_category3: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:eventsProductCategory3',
+        description='Категория, к которой относится товар, уровень 3.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
+    events_product_category4: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:eventsProductCategory4',
+        description='Категория, к которой относится товар, уровень 4.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
+    events_product_category5: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:eventsProductCategory5',
+        description='Категория, к которой относится товар, уровень 5.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
     events_product_variant: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:eventsProductVariant',
@@ -613,22 +789,26 @@ class SEcommerceImpressionProductSchema(_FK):
     impressions_url: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:impressionsURL',
-        description='URL страницы с товаром.'
+        description='URL страницы с товаром.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     impressions_date_time: Optional[List[datetime]] = Field(
         default=None,
         alias='ym:s:impressionsDateTime',
-        description='Дата и время просмотра.'
+        description='Дата и время просмотра.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(DateTime)')}
     )
     impressions_product_id: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:impressionsProductID',
-        description='Идентификатор просмотренного товара.'
+        description='Идентификатор просмотренного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     impressions_product_name: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:impressionsProductName',
-        description='Название просмотренного товара.'
+        description='Название просмотренного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     impressions_product_brand: Optional[List[str]] = Field(
         default=None,
@@ -642,7 +822,42 @@ class SEcommerceImpressionProductSchema(_FK):
         description='Категория, к которой относится просмотренный товар.',
         json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
-    # Добавьте здесь поля для impressionsProductCategory1 до impressionsProductCategory5, аналогично предыдущим полям
+    impressions_product_category1: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductCategory1',
+        description='Категория, к которой относится просмотренный товар, уровень 1.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
+    impressions_product_category2: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductCategory2',
+        description='Категория, к которой относится просмотренный товар, уровень 2.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
+    impressions_product_category3: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductCategory3',
+        description='Категория, к которой относится просмотренный товар, уровень 3.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
+    impressions_product_category4: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductCategory4',
+        description='Категория, к которой относится просмотренный товар, уровень 4.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
+    impressions_product_category5: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductCategory5',
+        description='Категория, к которой относится просмотренный товар, уровень 5.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
+    impressions_product_variant: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductVariant',
+        description='Вариант просмотренного товара.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('AArray(String)')}
+    )
     impressions_product_price: Optional[List[float]] = Field(
         default=None,
         alias='ym:s:impressionsProductPrice',
@@ -655,13 +870,36 @@ class SEcommerceImpressionProductSchema(_FK):
         description='Валюта просмотренного товара.',
         json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
+    impressions_product_coupon: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductCoupon',
+        description='Промокод, ассоциированный с просмотренным товаром.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
     impressions_product_list: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:impressionsProductList',
         description='Список, в который входят просмотренные товары, связанные с транзакцией.',
         json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
-    # Продолжение для добавления других полей, таких как количество, скидки и др.
+    impressions_product_quantity: Optional[List[int]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductQuantity',
+        description='Количество просмотренных товаров.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(UInt64)')}
+    )
+    impressions_product_event_time: Optional[List[datetime]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductEventTime',
+        description='Дата и время просмотра товара. То же, что и ym:s:impressionsDateTime.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(DateTime)')}
+    )
+    impressions_product_discount: Optional[List[str]] = Field(
+        default=None,
+        alias='ym:s:impressionsProductDiscount',
+        description='Процент скидки на просмотренный товар.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
+    )
 
 
 class SParamsSchema(_FK):
@@ -809,38 +1047,45 @@ class SEcommercePromotionSchema(_FK):
     promotion_id: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:promotionID',
-        description='Идентификатор или код промокампании.'
+        description='Идентификатор или код промокампании.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     promotion_name: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:promotionName',
-        description='Название промокампании.'
+        description='Название промокампании.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     promotion_creative: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:promotionCreative',
-        description='Название рекламного баннера.'
+        description='Название рекламного баннера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     promotion_position: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:promotionPosition',
-        description='Позиция рекламного баннера.'
+        description='Позиция рекламного баннера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     promotion_creative_slot: Optional[List[str]] = Field(
         default=None,
         alias='ym:s:promotionCreativeSlot',
-        description='Слот рекламного баннера.'
+        description='Слот рекламного баннера.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(String)')}
     )
     promotion_event_time: Optional[List[datetime]] = Field(
         default=None,
         alias='ym:s:promotionEventTime',
-        description='Дата и время события рекламной кампании.'
+        description='Дата и время события рекламной кампании.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(DateTime)')}
     )
     promotion_type: Optional[List[int]] = Field(
         default=None,
         alias='ym:s:promotionType',
         description='Тип события рекламной кампании: promoView — просмотр рекламного материала, promoClick — клик по '
-                    'рекламному материалу.'
+                    'рекламному материалу.',
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('Array(UInt8)')}
     )
 
 
