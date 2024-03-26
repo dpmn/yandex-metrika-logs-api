@@ -544,12 +544,12 @@ class PVBrowserDeviceSchema(_FK):
             'clickhouse_schema': fill_clickhouse_schema('UInt8')
         }
     )
-    screen_format: Optional[int] = Field(
+    screen_format: Optional[str] = Field(
         default=None,
         alias='ym:pv:screenFormat',
         description='Соотношение сторон.',
         json_schema_extra={
-            'clickhouse_schema': fill_clickhouse_schema('UInt16')
+            'clickhouse_schema': fill_clickhouse_schema('String')
         }
     )
     screen_height: Optional[int] = Field(

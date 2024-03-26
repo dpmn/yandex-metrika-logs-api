@@ -218,10 +218,10 @@ class SBrowserDeviceSchema(_FK):
         description='Наличие JavaScript.',
         json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt8')}
     )
-    screen_format: Optional[int] = Field(
+    screen_format: Optional[str] = Field(
         default=None, alias='ym:s:screenFormat',
         description='Соотношение сторон.',
-        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt16')}
+        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
     screen_colors: Optional[int] = Field(
         default=None, alias='ym:s:screenColors',
@@ -449,12 +449,13 @@ class SAdvSchema(_FK):
         description='Тип условия показа объявления.',
         json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
-    has_gclid: Optional[int] = Field(
-        default=None,
-        alias='ym:s:<attribution>HasGCLID',
-        description='Наличие метки GCLID.',
-        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt8')}
-    )
+    # В ответе API говорится, что такого поля нет
+    # has_gclid: Optional[int] = Field(
+    #     default=None,
+    #     alias='ym:s:<attribution>HasGCLID',
+    #     description='Наличие метки GCLID.',
+    #     json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('UInt8')}
+    # )
     gclid: Optional[str] = Field(
         default=None,
         alias='ym:s:<attribution>GCLID',
@@ -467,30 +468,31 @@ class SAdvSchema(_FK):
         description='Метка from.',
         json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
     )
-    openstat_ad: Optional[str] = Field(
-        default=None,
-        alias='ym:s:<attribution>OpenstatAd',
-        description='Openstat Ad.',
-        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
-    )
-    openstat_campaign: Optional[str] = Field(
-        default=None,
-        alias='ym:s:<attribution>OpenstatCampaign',
-        description='Openstat Campaign.',
-        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
-    )
-    openstat_service: Optional[str] = Field(
-        default=None,
-        alias='ym:s:<attribution>OpenstatService',
-        description='Openstat Service.',
-        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
-    )
-    openstat_source: Optional[str] = Field(
-        default=None,
-        alias='ym:s:<attribution>OpenstatSource',
-        description='Openstat Source.',
-        json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
-    )
+    # В ответе API говорится, что таких полей нет
+    # openstat_ad: Optional[str] = Field(
+    #     default=None,
+    #     alias='ym:s:<attribution>OpenstatAd',
+    #     description='Openstat Ad.',
+    #     json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    # )
+    # openstat_campaign: Optional[str] = Field(
+    #     default=None,
+    #     alias='ym:s:<attribution>OpenstatCampaign',
+    #     description='Openstat Campaign.',
+    #     json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    # )
+    # openstat_service: Optional[str] = Field(
+    #     default=None,
+    #     alias='ym:s:<attribution>OpenstatService',
+    #     description='Openstat Service.',
+    #     json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    # )
+    # openstat_source: Optional[str] = Field(
+    #     default=None,
+    #     alias='ym:s:<attribution>OpenstatSource',
+    #     description='Openstat Source.',
+    #     json_schema_extra={'clickhouse_schema': fill_clickhouse_schema('String')}
+    # )
 
 
 class SEcommercePurchaseSchema(_FK):
